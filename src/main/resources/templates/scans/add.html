@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Record Baggage Scan')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar('scan')}"></nav>
+
+<div class="container" style="max-width: 760px;">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Record Checkpoint Scan</h1>
+            <p class="page-subtitle">Log physical scan verification at port gates, conveyor sorters, or aircraft holds</p>
+        </div>
+        <a th:href="@{/baggage}" class="btn btn-outline">&larr; Back to Inventory</a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Checkpoint Scan Entry</h3>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/scans/add}" th:object="${scan}" method="post">
+                <div class="form-row">
+                    <div class="form-col form-group">
+                        <label class="form-label" for="baggageTag">Baggage Tag Number *</label>
+                        <input type="text" id="baggageTag" th:field="*{baggageTag}" class="form-control"
+                               placeholder="e.g. BAG-1001" list="registeredTags" required>
+                        <datalist id="registeredTags">
+                            <option th:each="b : ${allBaggage}" th:value="${b.tagNumber}" th:text="${b.tagNumber + ' (' + b.passengerName + ')'}"></option>
+                        </datalist>
+                        <span class="form-error" th:if="${#fields.hasErrors('baggageTag')}" th:errors="*{baggageTag}">Error</span>
+                        <div class="form-hint">Type or select an existing registered tag.</div>
+                    </div>
+
+                    <div class="form-col form-group">
+                        <label class="form-label" for="status">Updated Status *</label>
+                        <select id="status" th:field="*{status}" class="form-control" required>
+                            <option value="">-- Choose Status --</option>
+                            <option value="CHECKED_IN">CHECKED_IN (Initial Tagging)</option>
+                            <option value="LOADED">LOADED (Aircraft Belly / Cargo Bay)</option>
+                            <option value="IN_TRANSIT">IN_TRANSIT (In Flight / Active Passage)</option>
+                            <option value="CUSTOMS_CLEARED">CUSTOMS_CLEARED (Port/Border Inspection)</option>
+                            <option value="CLAIMED">CLAIMED (Delivered at Carousel/Gate)</option>
+                            <option value="MISPLACED">MISPLACED (Reported Missing/Unrouted)</option>
+                        </select>
+                        <span class="form-error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Error</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="location">Checkpoint / Physical Location *</label>
+                    <input type="text" id="location" th:field="*{location}" class="form-control"
+                           placeholder="e.g. Terminal 3 Conveyor Sorter 4, Cargo Bay 2, Dock 12 Berth B" required>
+                    <span class="form-error" th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Error</span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col form-group">
+                        <label class="form-label" for="scannedBy">Scanned By / Station ID</label>
+                        <input type="text" id="scannedBy" th:field="*{scannedBy}" class="form-control"
+                               placeholder="e.g. Ramp Handler Mike or Auto-Scanner-03">
+                    </div>
+
+                    <div class="form-col form-group">
+                        <label class="form-label" for="scanTime">Scan Timestamp</label>
+                        <input type="datetime-local" id="scanTime" th:field="*{scanTime}" class="form-control">
+                        <div class="form-hint">Leave blank to use current server time.</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="notes">Operational Notes</label>
+                    <textarea id="notes" th:field="*{notes}" class="form-control" rows="3"
+                              placeholder="e.g. Container ULD-492 sealed; weight verified 23.1kg."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+                    <a th:href="@{/baggage}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save Checkpoint Scan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

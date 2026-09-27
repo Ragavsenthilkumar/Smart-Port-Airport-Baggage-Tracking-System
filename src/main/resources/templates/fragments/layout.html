@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header(pageTitle)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle} + ' - Smart Port & Airport Baggage Tracking'">Smart Baggage Tracking</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Global Navigation Bar -->
+<nav class="navbar" th:fragment="navbar(activeTab)">
+    <div class="nav-container">
+        <a th:href="@{/dashboard}" class="brand-logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 20h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-1V4a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"></path>
+                <path d="M9 2v4h6V2"></path>
+                <circle cx="9" cy="20" r="1"></circle>
+                <circle cx="15" cy="20" r="1"></circle>
+            </svg>
+            <span>PortTrack 360</span>
+            <span class="badge-tag">Spring JDBC</span>
+        </a>
+        <ul class="nav-links">
+            <li>
+                <a th:href="@{/dashboard}" class="nav-link" th:classappend="${activeTab == 'dashboard'} ? 'active' : ''">
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/baggage}" class="nav-link" th:classappend="${activeTab == 'baggage'} ? 'active' : ''">
+                    Baggage
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/baggage/register}" class="nav-link" th:classappend="${activeTab == 'register'} ? 'active' : ''">
+                    + Register
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/baggage/search}" class="nav-link" th:classappend="${activeTab == 'search'} ? 'active' : ''">
+                    Track / Search
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/scans/add}" class="nav-link" th:classappend="${activeTab == 'scan'} ? 'active' : ''">
+                    Record Scan
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/airlines}" class="nav-link" th:classappend="${activeTab == 'airlines'} ? 'active' : ''">
+                    Airlines
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/invoices}" class="nav-link" th:classappend="${activeTab == 'invoices'} ? 'active' : ''">
+                    Invoices
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/reports}" class="nav-link" th:classappend="${activeTab == 'reports'} ? 'active' : ''">
+                    Reports
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Global Alert Flash Messages -->
+<div th:fragment="alerts">
+    <div class="alert alert-success" th:if="${successMessage}">
+        <span th:text="${successMessage}">Operation completed successfully.</span>
+    </div>
+    <div class="alert alert-error" th:if="${errorMessage}">
+        <span th:text="${errorMessage}">An error occurred during operation.</span>
+    </div>
+</div>
+
+<!-- Global Footer -->
+<footer class="footer" th:fragment="footer">
+    <div class="footer-content">
+        <div>
+            <strong>Smart Port & Airport Baggage Tracking System</strong> &bull; Spring Boot + Spring JDBC + MySQL
+        </div>
+        <div>
+            Student Project &bull; Clean Architecture &bull; Auto-Misplaced Baggage Detection Enabled (&gt; 4 hrs)
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

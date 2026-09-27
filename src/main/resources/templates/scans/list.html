@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Checkpoint Scans History')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar('scan')}"></nav>
+
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Checkpoint Scans Activity</h1>
+            <p class="page-subtitle">Real-time scan logs across airport gates, baggage belts, and maritime port berths</p>
+        </div>
+        <a th:href="@{/scans/add}" class="btn btn-primary">+ Record New Scan</a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Recent Checkpoint Logs (<span th:text="${#lists.size(scans)}">0</span>)</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>Scan Time</th>
+                    <th>Baggage Tag</th>
+                    <th>Checkpoint Location</th>
+                    <th>Status</th>
+                    <th>Scanned By</th>
+                    <th>Notes</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="s : ${scans}">
+                    <td th:text="${#temporals.format(s.scanTime, 'yyyy-MM-dd HH:mm:ss')}">2026-09-27 12:00:00</td>
+                    <td>
+                        <strong style="color: var(--accent); font-family: monospace;" th:text="${s.baggageTag}">BAG-1001</strong>
+                    </td>
+                    <td th:text="${s.location}">Terminal Sorter</td>
+                    <td>
+                        <span class="badge" th:classappend="'badge-' + ${#strings.toLowerCase(s.status)}" th:text="${s.status}">STATUS</span>
+                    </td>
+                    <td th:text="${s.scannedBy != null ? s.scannedBy : 'Automated Gate'}">Agent</td>
+                    <td th:text="${s.notes != null ? s.notes : '-'}">Notes</td>
+                    <td>
+                        <a th:href="@{/baggage/details/{tag}(tag=${s.baggageTag})}" class="btn btn-outline btn-sm">Full History</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(scans)}">
+                    <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                        No checkpoint scans recorded yet.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

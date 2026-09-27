@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Manage Airlines & Operators')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar('airlines')}"></nav>
+
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Airlines & Marine Operators</h1>
+            <p class="page-subtitle">Manage carrier partner accounts, operational hubs, and contact details</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-3" style="align-items: start;">
+        <!-- Left: Airlines List Table (spans 2 cols) -->
+        <div class="card" style="grid-column: span 2;">
+            <div class="card-header">
+                <h3>Registered Carriers (<span th:text="${#lists.size(airlines)}">0</span>)</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Carrier Name</th>
+                        <th>Hub / Berth</th>
+                        <th>Contact Email</th>
+                        <th>Phone</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="a : ${airlines}">
+                        <td>
+                            <strong style="color: var(--accent); font-family: monospace; font-size: 1rem;" th:text="${a.code}">EK</strong>
+                        </td>
+                        <td>
+                            <span style="font-weight: 600;" th:text="${a.name}">Emirates</span>
+                        </td>
+                        <td th:text="${a.hubTerminal != null ? a.hubTerminal : '-'}">Terminal 3</td>
+                        <td th:text="${a.contactEmail != null ? a.contactEmail : '-'}">cargo@emirates.com</td>
+                        <td th:text="${a.contactPhone != null ? a.contactPhone : '-'}">+971-4-214-4444</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(airlines)}">
+                        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                            No airlines registered yet. Use the form on the right to add one.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Right: Register New Airline Form -->
+        <div class="card">
+            <div class="card-header">
+                <h3>+ Add New Carrier</h3>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/airlines}" th:object="${newAirline}" method="post">
+                    <div class="form-group">
+                        <label class="form-label" for="code">Carrier Code *</label>
+                        <input type="text" id="code" th:field="*{code}" class="form-control"
+                               placeholder="e.g. EK, BA, MSK" required>
+                        <span class="form-error" th:if="${#fields.hasErrors('code')}" th:errors="*{code}">Error</span>
+                        <div class="form-hint">Unique 2-10 character IATA/ICAO code.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="name">Carrier / Airline Name *</label>
+                        <input type="text" id="name" th:field="*{name}" class="form-control"
+                               placeholder="e.g. Emirates Airlines" required>
+                        <span class="form-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="hubTerminal">Hub Terminal / Berth</label>
+                        <input type="text" id="hubTerminal" th:field="*{hubTerminal}" class="form-control"
+                               placeholder="e.g. Terminal 3 Gate B or Port Berth 4">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="contactEmail">Contact Email</label>
+                        <input type="email" id="contactEmail" th:field="*{contactEmail}" class="form-control"
+                               placeholder="e.g. cargo@airline.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="contactPhone">Contact Phone</label>
+                        <input type="text" id="contactPhone" th:field="*{contactPhone}" class="form-control"
+                               placeholder="e.g. +1-800-555-0199">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                        Save Carrier Record
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

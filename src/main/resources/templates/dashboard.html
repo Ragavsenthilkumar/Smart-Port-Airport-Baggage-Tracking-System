@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Operations Dashboard')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar('dashboard')}"></nav>
+
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Port & Airport Baggage Operations Dashboard</h1>
+            <p class="page-subtitle">Real-time status monitoring, transit checkpoints, and terminal handling overview</p>
+        </div>
+        <div style="display: flex; gap: 0.6rem;">
+            <a th:href="@{/baggage/register}" class="btn btn-primary">+ Register Baggage</a>
+            <a th:href="@{/scans/add}" class="btn btn-secondary">Record Scan</a>
+        </div>
+    </div>
+
+    <!-- Banner if misplaced baggage exists -->
+    <div class="alert alert-error" th:if="${misplacedCount > 0}">
+        <div>
+            <strong>Attention Required:</strong>
+            <span th:text="${misplacedCount}">0</span> baggage item(s) are flagged as
+            <strong>MISPLACED</strong> because they have been in active transit without a scan for more than 4 hours!
+        </div>
+        <a th:href="@{/reports}" class="btn btn-danger btn-sm">Inspect Alerts</a>
+    </div>
+
+    <!-- Stat Metric Cards -->
+    <div class="grid grid-cols-4" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="stat-label">Total Baggage</div>
+                <div class="stat-value" th:text="${totalBaggage}">0</div>
+                <div class="stat-subtext">Across all flights & berths</div>
+            </div>
+            <div class="stat-icon icon-blue">&#129523;</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="stat-label">In Active Transit</div>
+                <div class="stat-value" th:text="${inTransitCount}">0</div>
+                <div class="stat-subtext">Ramp / hold / vessel</div>
+            </div>
+            <div class="stat-icon icon-amber">&#9992;</div>
+        </div>
+
+        <div class="stat-card" style="border-left: 4px solid var(--danger);">
+            <div class="stat-info">
+                <div class="stat-label">Misplaced (&gt; 4 hrs)</div>
+                <div class="stat-value" style="color: var(--danger);" th:text="${misplacedCount}">0</div>
+                <div class="stat-subtext">Auto-detected timeout</div>
+            </div>
+            <div class="stat-icon icon-red">&#9888;</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="stat-label">Claimed / Delivered</div>
+                <div class="stat-value" style="color: var(--success);" th:text="${claimedCount}">0</div>
+                <div class="stat-subtext">Successfully retrieved</div>
+            </div>
+            <div class="stat-icon icon-green">&#10004;</div>
+        </div>
+    </div>
+
+    <!-- Quick Search Widget -->
+    <div class="card" style="margin-bottom: 2rem; background: linear-gradient(to right, #ffffff, #f8fafc);">
+        <div class="card-body" style="padding: 1.25rem 1.75rem;">
+            <form th:action="@{/baggage/search}" method="get" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                <label for="tagSearch" style="font-weight: 600; font-size: 0.95rem; color: var(--primary);">
+                    Quick Tag Lookup:
+                </label>
+                <input type="text" id="tagSearch" name="tag" class="form-control" style="max-width: 320px;" placeholder="e.g. BAG-1001" required>
+                <button type="submit" class="btn btn-primary">Track Baggage</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Two-column Section: Recent Baggage & Recent Scans -->
+    <div class="grid grid-cols-2">
+        <!-- Baggage Items -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Registered Luggage Status</h3>
+                <a th:href="@{/baggage}" class="btn btn-outline btn-sm">View All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>Tag #</th>
+                        <th>Passenger</th>
+                        <th>Carrier / Flight</th>
+                        <th>Route</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="b : ${allBaggage}" th:if="${bStat.index < 6}">
+                        <td>
+                            <strong th:text="${b.tagNumber}">BAG-001</strong>
+                        </td>
+                        <td th:text="${b.passengerName}">Passenger</td>
+                        <td>
+                            <span th:text="${b.airlineCode != null ? b.airlineCode : ''}">EK</span>
+                            <span th:text="${b.flightNumber}">202</span>
+                        </td>
+                        <td>
+                            <span th:text="${b.origin}">DXB</span> &rarr; <span th:text="${b.destination}">JFK</span>
+                        </td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="'badge-' + ${#strings.toLowerCase(b.status)}"
+                                  th:text="${b.status}">CHECKED_IN</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/baggage/details/{tag}(tag=${b.tagNumber})}" class="btn btn-outline btn-sm">Track</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(allBaggage)}">
+                        <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">
+                            No baggage registered yet.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Scans -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Recent Checkpoint Activity</h3>
+                <a th:href="@{/scans/add}" class="btn btn-outline btn-sm">+ Add Scan</a>
+            </div>
+            <div class="card-body" style="padding: 1rem;">
+                <div class="timeline" th:if="${not #lists.isEmpty(recentScans)}">
+                    <div class="timeline-item" th:each="s : ${recentScans}">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <span class="timeline-title">
+                                    <a th:href="@{/baggage/details/{tag}(tag=${s.baggageTag})}" th:text="${s.baggageTag}">BAG-1001</a>
+                                    &bull; <span th:text="${s.location}">Location</span>
+                                </span>
+                                <span class="badge" th:classappend="'badge-' + ${#strings.toLowerCase(s.status)}" th:text="${s.status}">STATUS</span>
+                            </div>
+                            <div class="timeline-body">
+                                <span th:text="${s.notes != null ? s.notes : 'Checkpoint verification'}">Notes</span>
+                                <span style="display: block; font-size: 0.75rem; color: var(--text-light); margin-top: 0.2rem;"
+                                      th:text="'Scanned by: ' + ${s.scannedBy != null ? s.scannedBy : 'Automated Gateway'} + ' at ' + ${#temporals.format(s.scanTime, 'yyyy-MM-dd HH:mm')}">Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${#lists.isEmpty(recentScans)}" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">
+                    No checkpoint scans recorded yet.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

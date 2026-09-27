@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Register Baggage')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar('register')}"></nav>
+
+<div class="container" style="max-width: 760px;">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Register Baggage</h1>
+            <p class="page-subtitle">Assign a unique barcode tag to passenger luggage or port container cargo</p>
+        </div>
+        <a th:href="@{/baggage}" class="btn btn-outline">&larr; Back to List</a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Baggage Registration Form</h3>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/baggage/register}" th:object="${baggage}" method="post">
+                <div class="form-row">
+                    <div class="form-col form-group">
+                        <label class="form-label" for="tagNumber">Unique Baggage Tag Number *</label>
+                        <input type="text" id="tagNumber" th:field="*{tagNumber}" class="form-control"
+                               placeholder="e.g. BAG-2001" required>
+                        <span class="form-error" th:if="${#fields.hasErrors('tagNumber')}" th:errors="*{tagNumber}">Error</span>
+                        <div class="form-hint">Must be unique across the port/airport network.</div>
+                    </div>
+
+                    <div class="form-col form-group">
+                        <label class="form-label" for="passengerName">Passenger / Consignee Name *</label>
+                        <input type="text" id="passengerName" th:field="*{passengerName}" class="form-control"
+                               placeholder="e.g. Michael Smith" required>
+                        <span class="form-error" th:if="${#fields.hasErrors('passengerName')}" th:errors="*{passengerName}">Error</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col form-group">
+                        <label class="form-label" for="airlineId">Operating Airline / Carrier *</label>
+                        <select id="airlineId" th:field="*{airlineId}" class="form-control" required>
+                            <option value="">-- Select Carrier --</option>
+                            <option th:each="a : ${airlines}" th:value="${a.id}" th:text="${a.name + ' (' + a.code + ')'}">Emirates</option>
+                        </select>
+                        <span class="form-error" th:if="${#fields.hasErrors('airlineId')}" th:errors="*{airlineId}">Error</span>
+                    </div>
+
+                    <div class="form-col form-group">
+                        <label class="form-label" for="flightNumber">Flight / Voyage Number *</label>
+                        <input type="text" id="flightNumber" th:field="*{flightNumber}" class="form-control"
+                               placeholder="e.g. EK-202 or MSK-SEA-14" required>
+                        <span class="form-error" th:if="${#fields.hasErrors('flightNumber')}" th:errors="*{flightNumber}">Error</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col form-group">
+                        <label class="form-label" for="origin">Origin Station / Port *</label>
+                        <input type="text" id="origin" th:field="*{origin}" class="form-control"
+                               placeholder="e.g. DXB or Port Singapore" required>
+                        <span class="form-error" th:if="${#fields.hasErrors('origin')}" th:errors="*{origin}">Error</span>
+                    </div>
+
+                    <div class="form-col form-group">
+                        <label class="form-label" for="destination">Destination Station / Port *</label>
+                        <input type="text" id="destination" th:field="*{destination}" class="form-control"
+                               placeholder="e.g. JFK or Rotterdam Port" required>
+                        <span class="form-error" th:if="${#fields.hasErrors('destination')}" th:errors="*{destination}">Error</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="status">Initial Status</label>
+                    <select id="status" th:field="*{status}" class="form-control">
+                        <option value="CHECKED_IN">CHECKED_IN (Standard Check-in Desk)</option>
+                        <option value="LOADED">LOADED (In Cargo Container / Aircraft Hold)</option>
+                        <option value="IN_TRANSIT">IN_TRANSIT (Active Transit)</option>
+                    </select>
+                    <div class="form-hint">Note: If set to IN_TRANSIT and not scanned for &gt; 4 hours, it will automatically be flagged as MISPLACED.</div>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+                    <a th:href="@{/baggage}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Complete Registration</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

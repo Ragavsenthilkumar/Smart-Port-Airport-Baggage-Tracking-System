@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Airline Handling Invoices')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar('invoices')}"></nav>
+
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Airline & Port Handling Invoices</h1>
+            <p class="page-subtitle">Billing records for terminal sorting, ramp loading, and cargo logistics services</p>
+        </div>
+    </div>
+
+    <!-- Financial Summary Cards -->
+    <div class="grid grid-cols-3" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+            <div class="stat-info">
+                <div class="stat-label">Total Invoiced</div>
+                <div class="stat-value" th:text="'$' + ${#numbers.formatDecimal(totalInvoiced, 1, 2)}">$0.00</div>
+                <div class="stat-subtext">Cumulative billed handling</div>
+            </div>
+            <div class="stat-icon icon-blue">&#128179;</div>
+        </div>
+
+        <div class="stat-card" style="border-left: 4px solid var(--success);">
+            <div class="stat-info">
+                <div class="stat-label">Total Collected (Paid)</div>
+                <div class="stat-value" style="color: var(--success);" th:text="'$' + ${#numbers.formatDecimal(totalPaid, 1, 2)}">$0.00</div>
+                <div class="stat-subtext">Settled payments</div>
+            </div>
+            <div class="stat-icon icon-green">&#128181;</div>
+        </div>
+
+        <div class="stat-card" style="border-left: 4px solid var(--warning);">
+            <div class="stat-info">
+                <div class="stat-label">Pending / Overdue</div>
+                <div class="stat-value" style="color: var(--warning);" th:text="'$' + ${#numbers.formatDecimal(totalPending, 1, 2)}">$0.00</div>
+                <div class="stat-subtext">Awaiting payment settlement</div>
+            </div>
+            <div class="stat-icon icon-amber">&#9200;</div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-3" style="align-items: start;">
+        <!-- Invoices Table (spans 2 cols) -->
+        <div class="card" style="grid-column: span 2;">
+            <div class="card-header">
+                <h3>Handling Invoices (<span th:text="${#lists.size(invoices)}">0</span>)</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>Invoice #</th>
+                        <th>Carrier</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="inv : ${invoices}">
+                        <td>
+                            <strong style="color: var(--accent); font-family: monospace;" th:text="${inv.invoiceNumber}">INV-001</strong>
+                        </td>
+                        <td>
+                            <span th:text="${inv.airlineName}">Airline</span>
+                            <span th:if="${inv.airlineCode}" style="color: var(--text-light); font-size: 0.8rem;" th:text="'(' + ${inv.airlineCode} + ')'"></span>
+                        </td>
+                        <td>
+                            <strong th:text="'$' + ${#numbers.formatDecimal(inv.amount, 1, 2)}">$1,200.00</strong>
+                        </td>
+                        <td th:text="${inv.invoiceDate}">2026-09-01</td>
+                        <td th:text="${inv.dueDate != null ? inv.dueDate : '-'}">2026-09-30</td>
+                        <td>
+                            <span class="badge" th:classappend="'badge-' + ${#strings.toLowerCase(inv.paymentStatus)}" th:text="${inv.paymentStatus}">PENDING</span>
+                        </td>
+                        <td>
+                            <form th:if="${inv.paymentStatus != 'PAID'}" th:action="@{/invoices/{id}/status(id=${inv.id})}" method="post" style="display: inline;">
+                                <input type="hidden" name="status" value="PAID">
+                                <button type="submit" class="btn btn-outline btn-sm" style="color: var(--success); border-color: var(--success);">
+                                    Mark Paid
+                                </button>
+                            </form>
+                            <span th:if="${inv.paymentStatus == 'PAID'}" style="color: var(--success); font-size: 0.85rem; font-weight: 600;">Settled</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(invoices)}">
+                        <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                            No invoices generated yet. Create one using the form on the right.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Create Handling Invoice Form -->
+        <div class="card">
+            <div class="card-header">
+                <h3>+ Create Invoice</h3>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/invoices}" th:object="${newInvoice}" method="post">
+                    <div class="form-group">
+                        <label class="form-label" for="invoiceNumber">Invoice Reference #</label>
+                        <input type="text" id="invoiceNumber" th:field="*{invoiceNumber}" class="form-control"
+                               placeholder="e.g. INV-2026-005 (auto if blank)">
+                        <span class="form-error" th:if="${#fields.hasErrors('invoiceNumber')}" th:errors="*{invoiceNumber}">Error</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="airlineSelect">Billed Airline / Carrier *</label>
+                        <select id="airlineSelect" th:field="*{airlineId}" class="form-control" required>
+                            <option value="">-- Select Carrier --</option>
+                            <option th:each="a : ${airlines}" th:value="${a.id}" th:text="${a.name + ' (' + a.code + ')'}">Airline</option>
+                        </select>
+                        <span class="form-error" th:if="${#fields.hasErrors('airlineId')}" th:errors="*{airlineId}">Error</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="amount">Handling Fee ($) *</label>
+                        <input type="number" step="0.01" min="0.01" id="amount" th:field="*{amount}" class="form-control"
+                               placeholder="e.g. 4500.00" required>
+                        <span class="form-error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Error</span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col form-group">
+                            <label class="form-label" for="invoiceDate">Invoice Date</label>
+                            <input type="date" id="invoiceDate" th:field="*{invoiceDate}" class="form-control">
+                        </div>
+                        <div class="form-col form-group">
+                            <label class="form-label" for="dueDate">Due Date</label>
+                            <input type="date" id="dueDate" th:field="*{dueDate}" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="paymentStatus">Payment Status</label>
+                        <select id="paymentStatus" th:field="*{paymentStatus}" class="form-control">
+                            <option value="PENDING">PENDING</option>
+                            <option value="PAID">PAID</option>
+                            <option value="OVERDUE">OVERDUE</option>
+                            <option value="CANCELLED">CANCELLED</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="description">Service Description</label>
+                        <textarea id="description" th:field="*{description}" class="form-control" rows="2"
+                                  placeholder="e.g. Terminal 3 conveyor sorting, aircraft hold ramp labor"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                        Generate Invoice
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

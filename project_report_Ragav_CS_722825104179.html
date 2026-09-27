@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Port & Airport Baggage Tracking System - Project Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.8;
+    color: #000;
+    background: #fff;
+  }
+
+  /* ---- PAGE BREAKS ---- */
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 25mm 25mm 20mm 30mm;
+    background: white;
+    page-break-after: always;
+    position: relative;
+  }
+
+  @media print {
+    body { background: white; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      page-break-after: always;
+      padding: 25mm 25mm 20mm 30mm;
+    }
+    .no-print { display: none !important; }
+  }
+
+  /* ---- TYPOGRAPHY ---- */
+  h1, h2, h3, h4, h5, h6 { font-weight: bold; }
+  h2 { font-size: 16pt; text-transform: uppercase; }
+  h3 { font-size: 14pt; }
+  h4 { font-size: 12pt; }
+  
+  p { text-align: justify; margin-bottom: 15px; }
+
+  /* ---- CHAPTER HEADER LINE ---- */
+  .chapter-header {
+    border-bottom: 4px solid black;
+    padding-bottom: 5px;
+    margin-bottom: 30px;
+    text-align: right;
+  }
+  .chapter-header h3 {
+    text-transform: uppercase;
+  }
+
+  /* ---- TABLES ---- */
+  .bordered-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  .bordered-table th, .bordered-table td {
+    border: 1px solid black;
+    padding: 10px;
+  }
+  .bordered-table th { text-align: center; }
+
+  /* ---- COVER PAGE TABLE ---- */
+  .cover-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    height: 100%;
+  }
+  .cover-table td {
+    border: 1px solid #ddd;
+    padding: 20px;
+    vertical-align: middle;
+  }
+  
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #000;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 13pt;
+    cursor: pointer;
+    z-index: 9999;
+  }
+
+  .toc-row td { padding: 8px 10px; border: 1px solid black; }
+  .toc-bold { font-weight: bold; }
+  
+  ul { margin-left: 40px; margin-bottom: 20px; }
+  li { margin-bottom: 10px; text-align: justify; }
+
+  .figure-caption {
+    text-align: center;
+    font-weight: normal;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ Save as PDF</button>
+
+<!-- ============================================================ -->
+<!-- PAGE 1: COVER PAGE -->
+<!-- ============================================================ -->
+<div class="page" style="padding: 15mm;">
+  <table class="cover-table">
+    <tr>
+      <td style="width: 30%; text-align: center;">
+        <div style="border: 2px solid black; width: 100px; height: 120px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 10pt; text-align:center;">
+          Leadership &<br>Excellence<br><br>[LOGO]
+        </div>
+      </td>
+      <td style="width: 70%; text-align: center;">
+        <h2 style="font-size: 15pt;">SMART PORT & AIRPORT BAGGAGE TRACKING SYSTEM</h2>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <h3 style="font-size: 13pt;">JAVA PROJECT<br>NOVEMBER 2026</h3>
+      </td>
+      <td style="text-align: center;">
+        <p style="text-transform: uppercase; text-align: center; line-height: 2; margin: 0;">
+          JAVA PROJECT REPORT SUBMITTED IN PARTIAL FULFILLMENT OF<br>
+          THE REQUIREMENTS FOR THE AWARD OF THE<br>
+          DEGREE OF <b>BACHELOR OF ENGINEERING</b><br>
+          IN <b>COMPUTER SCIENCE AND ENGINEERING</b><br>
+          OF THE ANNA UNIVERSITY
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <div style="border-top: 5px solid black; border-bottom: 5px solid black; padding: 15px 0; margin: 20px 0;">
+          <h2 style="font-size: 16pt;">PROJECT<br>WORK</h2>
+        </div>
+      </td>
+      <td style="text-align: right; vertical-align: bottom;">
+        <p style="text-align: right; margin: 0;">Submitted by<br><b>RAGAV C S - 722825104179</b></p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <h3 style="font-size: 14pt;">BATCH<br>2025 &ndash; 2029</h3>
+      </td>
+      <td style="text-align: right; vertical-align: bottom;">
+        <p style="text-align: right; margin: 0;">Under the Guidance of<br><b>MR. M. KARTHICK RAJA M.E.</b><br>Assistant Professor/CSE</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: center;">
+        <h3 style="font-size: 13pt; margin-bottom: 5px;">Department of Computer Science & Engineering</h3>
+        <h2 style="font-size: 16pt; margin-bottom: 5px;">Sri Eshwar College of Engineering</h2>
+        <p style="text-align: center; margin-bottom: 5px;">(An Autonomous Institution &ndash; Affiliated to Anna University)</p>
+        <h4 style="font-size: 12pt;">COIMBATORE &ndash; 641 202</h4>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 2: BONAFIDE CERTIFICATE -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black; padding: 25mm 20mm;">
+  <h3 style="text-align:center; font-size: 16pt;">Sri Eshwar College of Engineering</h3>
+  <p style="text-align:center; margin-bottom: 5px;">(An Autonomous Institution &ndash; Affiliated to Anna University)</p>
+  <h4 style="text-align:center; font-size: 12pt;">COIMBATORE &ndash; 641 202</h4>
+  
+  <br><br><br>
+  <h3 style="text-align:center;">BONAFIDE CERTIFICATE</h3>
+  <br><br>
+  
+  <p style="line-height: 2;">
+    Certified that this Report titled <b>"SMART PORT & AIRPORT BAGGAGE TRACKING SYSTEM"</b> is the bonafide work of
+  </p>
+  
+  <table style="width: 80%; margin: 20px auto; border-collapse: collapse; border: 1px solid #eee;">
+    <tr>
+      <td style="border: 1px solid #eee; padding: 15px; text-align: center;"><b>RAGAV C S</b></td>
+      <td style="border: 1px solid #eee; padding: 15px; text-align: center;"><b>722825104179</b></td>
+    </tr>
+  </table>
+  
+  <p style="line-height: 2;">who carried out the project work under my supervision.</p>
+  
+  <br><br><br>
+  <table style="width:100%; border:none;">
+    <tr>
+      <td style="width:50%; border:none; vertical-align:top;">
+        <p>-----------------------------------------<br>
+        <b>SIGNATURE</b><br><br>
+        <b>DR. R. SUBHA M.E., Ph.D.</b><br>
+        <b>HEAD OF THE DEPARTMENT</b><br>
+        Computer Science and Engineering,<br>
+        Sri Eshwar College of Engineering,<br>
+        Coimbatore &ndash; 641 202.</p>
+      </td>
+      <td style="width:50%; border:none; vertical-align:top;">
+        <p>-----------------------------------------<br>
+        <b>SIGNATURE</b><br><br>
+        <b>MR. M. KARTHICK RAJA M.E.</b><br>
+        <b>SUPERVISOR</b><br>
+        Assistant Professor,<br>
+        Computer Science and Engineering,<br>
+        Sri Eshwar College of Engineering,<br>
+        Coimbatore &ndash; 641 202.</p>
+      </td>
+    </tr>
+  </table>
+  
+  <br><br><br>
+  <div style="border: 1px solid #eee; padding: 20px;">
+    <p>Submitted for the <b>Autonomous Semester End Mini Project Viva-Voce</b> held on ........................</p>
+    <br><br><br>
+    <table style="width:100%; border:none; text-align:center;">
+      <tr>
+        <td style="border:none;">_________________________<br><b>INTERNAL EXAMINER</b></td>
+        <td style="border:none;">_________________________<br><b>EXTERNAL EXAMINER</b></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 3: DECLARATION -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <br><br>
+  <h3 style="text-align:center;">DECLARATION</h3>
+  <br><br>
+  <h4 style="text-align:center;">RAGAV C S [722825104179]</h4>
+  <br><br><br>
+  
+  <p style="line-height: 2;">
+    To declare that the project entitled <b>"SMART PORT & AIRPORT BAGGAGE TRACKING SYSTEM"</b> submitted in partial fulfilment to the University as the project work of Bachelor of Engineering (Computer Science and Engineering) Degree, is a record of original work done by us under the supervision and guidance of <b>MR. M. KARTHICK RAJA M.E.</b>, Assistant Professor, Department of Computer Science and Engineering, Sri Eshwar College of Engineering, Coimbatore.
+  </p>
+  
+  <br><br><br>
+  <table style="width:100%; border:none;">
+    <tr>
+      <td style="border:none; vertical-align:top;">
+        <p><b>Place:</b> Coimbatore<br><b>Date:</b></p>
+      </td>
+      <td style="border:none; text-align:right; vertical-align:top;">
+        <p style="text-align:right;">RAGAV C S<br>722825104179</p>
+      </td>
+    </tr>
+  </table>
+  
+  <br><br><br><br>
+  <p>Project Guided by,<br><br><b>[MR. M. KARTHICK RAJA M.E., AP/CSE]</b></p>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 4: ACKNOWLEDGEMENT -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>ACKNOWLEDGEMENT</h3>
+  </div>
+  
+  <p style="line-height: 2;">
+    The success of a work depends on a team and cooperation. I take this opportunity to express my gratitude and thanks to everyone who helped me in my project. I would like to thank the management for the constant support provided by them to complete this project.
+  </p>
+  
+  <p style="line-height: 2;">
+    It is indeed our great honor bounded duty to thank our beloved <b>Chairman Mr. R. Mohanram</b>, for his academic interest shown towards the students.
+  </p>
+  
+  <p style="line-height: 2;">
+    We are indebted to our <b>Director Mr. R. Rajaram</b>, for motivating and providing us with all facilities.
+  </p>
+  
+  <p style="line-height: 2;">
+    I wish to express my sincere regards and deep sense of gratitude to <b>Dr. Sudha Mohanram, M.E, Ph.D. Principal</b>, for the excellent facilities and encouragement provided during the course of the study and project.
+  </p>
+  
+  <p style="line-height: 2;">
+    We are indebted to <b>Dr. R. SUBHA, M.E., Ph.D.</b> Head of <b>Computer Science and Engineering Department</b> for having permitted us to carry out this project and giving the complete freedom to utilize the resources of the department.
+  </p>
+  
+  <p style="line-height: 2;">
+    I express my sincere thanks to my mini project Coordinator <b>Mr. M. Karthick Raja M.E.</b>, Assistant Professor of Computer Science and Engineering Department for the valuable guidance and encouragement given, to us for this project.
+  </p>
+  
+  <p style="line-height: 2;">
+    I solemnly express our thanks to all the teaching and nonteaching staff of the Computer Science and Engineering Department, family and friends for their valuable support which inspired us to work on this project.
+  </p>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 5: TABLE OF CONTENT -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>TABLE OF CONTENT</h3>
+  </div>
+  
+  <table style="width:100%; border-collapse: collapse; border: 1px solid black;">
+    <tr class="toc-bold"><td class="toc-row" style="text-align:center;">CONTENT</td><td class="toc-row" style="text-align:center; width:100px;">PAGE NO</td></tr>
+    
+    <tr class="toc-bold"><td class="toc-row">ABSTRACT</td><td class="toc-row" style="text-align:center;">1</td></tr>
+    <tr class="toc-bold"><td class="toc-row">LIST OF FIGURES</td><td class="toc-row" style="text-align:center;">2</td></tr>
+    <tr class="toc-bold"><td class="toc-row">LIST OF TABLES</td><td class="toc-row" style="text-align:center;">3</td></tr>
+    
+    <tr><td class="toc-row"><b>1. INTRODUCTION</b><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;1.1. PROJECT OVERVIEW & OBJECTIVES<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;1.2. PROBLEM STATEMENT AND MOTIVATION
+    </td><td class="toc-row" style="text-align:center; vertical-align:top;"><br>4<br>5</td></tr>
+    
+    <tr><td class="toc-row"><b>2. SYSTEM REQUIREMENTS & SPECIFICATION</b><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;2.1. FUNCTIONAL REQUIREMENTS<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;2.2. NON-FUNCTIONAL REQUIREMENTS
+    </td><td class="toc-row" style="text-align:center; vertical-align:top;"><br>6<br>8</td></tr>
+    
+    <tr><td class="toc-row"><b>3. LOW-LEVEL DESIGN (LLD)</b><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;3.1. SYSTEM ARCHITECTURE DESIGN<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;3.2. COMPONENT DESIGN & MODULE STRUCTURE
+    </td><td class="toc-row" style="text-align:center; vertical-align:top;"><br>9<br>10</td></tr>
+    
+    <tr><td class="toc-row"><b>4. MODELING (UML DIAGRAMS)</b><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;4.1. USE CASE DIAGRAM<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;4.2. CLASS DIAGRAM AND SEQUENCE DIAGRAM<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;4.3. FLOW DIAGRAM AND ACTIVITY DIAGRAM
+    </td><td class="toc-row" style="text-align:center; vertical-align:top;"><br>12<br>13<br>14</td></tr>
+    
+    <tr><td class="toc-row"><b>5. DATABASE DESIGN</b><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;5.1. ENTITY RELATIONSHIP DIAGRAM<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;5.2. DATABASE SCHEMA AND TABLE STRUCTURE
+    </td><td class="toc-row" style="text-align:center; vertical-align:top;"><br>16<br>17</td></tr>
+    
+    <tr><td class="toc-row"><b>6. IMPLEMENTATION AND TESTING</b><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;6.1. FILES WITH CODES<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;6.2. RESULT
+    </td><td class="toc-row" style="text-align:center; vertical-align:top;"><br>19<br>20</td></tr>
+    
+    <tr><td class="toc-row"><b>7. CONCLUSION AND FUTURE SCOPE</b><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;7.1. PROJECT SUMMARY AND ACHIEVEMENTS<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;7.2. FUTURE ENHANCEMENTS AND SCOPE
+    </td><td class="toc-row" style="text-align:center; vertical-align:top;"><br>21<br>22</td></tr>
+    
+    <tr><td class="toc-row"><b>8. APPENDICES AND REFERENCES</b><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;8.1. REFERENCES<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;8.2. APPENDIX A &ndash; SOURCE CODE STRUCTURE
+    </td><td class="toc-row" style="text-align:center; vertical-align:top;"><br>23<br>23</td></tr>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 6: ABSTRACT -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>ABSTRACT</h3>
+  </div>
+  <p style="text-indent: 50px; line-height: 2;">
+    The Smart Port & Airport Baggage Tracking System is a mission-critical web application developed to monitor, trace, and audit the movement of passenger luggage and container cargo across maritime port berths and international airport terminals. The system handles baggage check-in, tracking across multiple checkpoints, automated misplaced luggage detection, and handling fee invoices.
+  </p>
+  <p style="text-indent: 50px; line-height: 2;">
+    Developed using Java Spring Boot, the system manages baggage records, airline profiles, checkpoint scans, and dynamic fee calculations. Ground operators can register baggage at entry, generate a unique barcode tag, and complete scans at various transit points. The system also supports automated background checks for misplaced luggage using scheduled SQL operations.
+  </p>
+  <p style="text-indent: 50px; line-height: 2;">
+    In addition to operations, the system incorporates basic invoicing and carrier management functionalities. It maintains handling fee invoices, tracks payments, and generates operational reports. Facility administrators can monitor baggage status distributions and track outstanding invoice balances, providing a consolidated view of the terminal's operational and financial performance.
+  </p>
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">1</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 7: LIST OF FIGURES -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>LIST OF FIGURES</h3>
+  </div>
+  <table class="bordered-table">
+    <tr><th>Fig No</th><th>NAME OF THE FIGURE</th><th>Page No</th></tr>
+    <tr><td style="text-align:center;"><b>3.1</b></td><td><b>SYSTEM ARCHITECTURE</b></td><td style="text-align:center;"><b>9</b></td></tr>
+    <tr><td style="text-align:center;"><b>3.2.1</b></td><td><b>MODULE STRUCTURE</b></td><td style="text-align:center;"><b>10</b></td></tr>
+    <tr><td style="text-align:center;"><b>3.2.2</b></td><td><b>COMPONENT DESIGN</b></td><td style="text-align:center;"><b>11</b></td></tr>
+    <tr><td style="text-align:center;"><b>4.1</b></td><td><b>USE CASE DIAGRAM</b></td><td style="text-align:center;"><b>12</b></td></tr>
+    <tr><td style="text-align:center;"><b>4.2.1</b></td><td><b>CLASS DIAGRAM</b></td><td style="text-align:center;"><b>13</b></td></tr>
+    <tr><td style="text-align:center;"><b>4.2.2</b></td><td><b>SEQUENCE DIAGRAM</b></td><td style="text-align:center;"><b>13</b></td></tr>
+    <tr><td style="text-align:center;"><b>4.3.1</b></td><td><b>FLOW DIAGRAM</b></td><td style="text-align:center;"><b>14</b></td></tr>
+    <tr><td style="text-align:center;"><b>4.3.2</b></td><td><b>ACTIVITY DIAGRAM</b></td><td style="text-align:center;"><b>15</b></td></tr>
+    <tr><td style="text-align:center;"><b>5.1</b></td><td><b>ER DIAGRAM</b></td><td style="text-align:center;"><b>16</b></td></tr>
+    <tr><td style="text-align:center;"><b>5.2</b></td><td><b>DATABASE SCHEMA</b></td><td style="text-align:center;"><b>17</b></td></tr>
+  </table>
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">2</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 8: LIST OF TABLES -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>LIST OF TABLES</h3>
+  </div>
+  <table class="bordered-table">
+    <tr><th>Table. No</th><th>NAME OF THE TABLE</th><th>Page No</th></tr>
+    <tr><td style="text-align:center;"><b>5.2.1</b></td><td><b>AIRLINES TABLE</b></td><td style="text-align:center;"><b>17</b></td></tr>
+    <tr><td style="text-align:center;"><b>5.2.2</b></td><td><b>BAGGAGE TABLE</b></td><td style="text-align:center;"><b>17</b></td></tr>
+    <tr><td style="text-align:center;"><b>5.2.3</b></td><td><b>BAGGAGE_SCANS TABLE</b></td><td style="text-align:center;"><b>18</b></td></tr>
+    <tr><td style="text-align:center;"><b>5.2.4</b></td><td><b>INVOICES TABLE</b></td><td style="text-align:center;"><b>18</b></td></tr>
+  </table>
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">3</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 9: INTRODUCTION -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>INTRODUCTION</h3>
+  </div>
+  <h4>1.1 PROJECT OVERVIEW AND OBJECTIVES</h4>
+  <p style="line-height: 2;">
+    The Smart Port & Airport Baggage Tracking System is a web-based management system designed to efficiently manage automated baggage tracking in port terminals. The system handles baggage tags, vehicle/flight entry and exit, transit duration, handling fee calculation, airline management, invoices, and terminal operations.
+  </p>
+  <p style="line-height: 2;">
+    The application is developed using Spring Boot, MySQL, and Thymeleaf. It also integrates scheduled automation to manage misplaced baggage detection, carrier transactions, and operational metrics. The system provides operational reports to help administrators monitor the overall performance of the terminal handling facility.
+  </p>
+  
+  <br>
+  <h4>Objectives</h4>
+  <ul style="line-height: 2;">
+    <li>To automate the management of baggage tracking and lifecycle sessions.</li>
+    <li>To record checkpoint scans and automatically flag misplaced luggage.</li>
+    <li>To manage airlines, carriers, tracking services, and related transactions.</li>
+    <li>To automate invoicing and fee tracking operations.</li>
+    <li>To track handling revenue, airline invoices, and terminal operations.</li>
+    <li>To generate comprehensive operational reports for effective facility management.</li>
+  </ul>
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">4</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 10: PROBLEM STATEMENT -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <h4>1.2 PROBLEM STATEMENT AND MOTIVATION</h4>
+  <p style="line-height: 2;">
+    Airports and seaports face a growing challenge of misplaced luggage, leading to inefficient manual searches, delayed transfers, and difficulties in managing handling operations. Traditional tracking systems often lack centralized tracking of transit duration, billing, carrier records, and automatic anomaly detection. This creates challenges in maintaining accurate records and monitoring the operational performance of a terminal facility. Manual processes can also result in billing errors, misplaced records, and delays in tracking. The lack of real-time information makes it difficult to identify delayed baggage and manage facility operations efficiently. A unified system is therefore required to connect tracking operations with automated alerts and reporting.
+  </p>
+  <p style="line-height: 2;">
+    The project is motivated by the need for a centralized and automated tracking management solution that can simplify day-to-day operations. By combining baggage management with automated SQL checks and billing tracking, the system aims to reduce manual effort, improve record accuracy, and provide administrators with a clear view of both tracking operations and invoice performance. The system also provides a structured way to manage airlines, invoices, payments, and tracking activities. This integration can help terminal facilities operate more efficiently while supporting better planning and decision-making. The project also provides an opportunity to apply web technologies to a practical real-world management problem.
+  </p>
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">5</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 11: REQUIREMENTS -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>SYSTEM REQUIREMENTS & SPECIFICATION</h3>
+  </div>
+  <h4>2.1 FUNCTIONAL REQUIREMENTS</h4>
+  <p>The system shall provide the following functional requirements:</p>
+  
+  <br>
+  <b>Operator & Role Management</b>
+  <ul>
+    <li>Manage Terminal Operators and Administrative accounts.</li>
+    <li>Provide restricted access to sensitive financial information.</li>
+    <li>Maintain user information and activity logs implicitly.</li>
+  </ul>
+  
+  <b>Baggage Tracking Management</b>
+  <ul>
+    <li>Add, update, and manage unique baggage tags.</li>
+    <li>Track status changes (CHECKED_IN, IN_TRANSIT, MISPLACED).</li>
+    <li>Log physical checkpoint scan locations and times.</li>
+  </ul>
+  
+  <b>Automated Processing</b>
+  <ul>
+    <li>Run background tasks to detect overdue transit times.</li>
+    <li>Flag baggage without scans for over 4 hours as MISPLACED.</li>
+    <li>Calculate aggregated handling totals automatically.</li>
+  </ul>
+  
+  <b>Invoice & Airline Management</b>
+  <ul>
+    <li>Register and maintain carrier and airline profiles.</li>
+    <li>Generate invoices for handling and terminal fees.</li>
+    <li>Record invoice payments and track due dates.</li>
+    <li>Compare paid amounts against pending balances.</li>
+  </ul>
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">6</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 12: NON-FUNCTIONAL -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <h4>2.2 NON-FUNCTIONAL REQUIREMENTS</h4>
+  <p>The system shall provide the following non-functional requirements:</p>
+  
+  <br>
+  <b>Performance</b>
+  <ul>
+    <li>The system should provide quick responses for common operations using JDBC.</li>
+    <li>Baggage registration and search operations should be processed efficiently.</li>
+    <li>Reports should be generated within a reasonable time using SQL aggregations.</li>
+  </ul>
+  
+  <b>Security</b>
+  <ul>
+    <li>SQL queries must use parameterized statements to prevent injection.</li>
+    <li>Sensitive passenger data and financial information should be protected.</li>
+    <li>Application configuration should securely store database credentials.</li>
+  </ul>
+  
+  <b>Reliability</b>
+  <ul>
+    <li>The system should maintain accurate tracking and financial records.</li>
+    <li>Transactions should be stored consistently in the MySQL database.</li>
+    <li>The system should handle invalid inputs gracefully with Jakarta Validation.</li>
+  </ul>
+  
+  <b>Usability</b>
+  <ul>
+    <li>The web interface should be simple and easy to navigate with Bootstrap/CSS.</li>
+    <li>Forms should provide clear instructions and error messages.</li>
+    <li>Operators should be able to access tracking history easily.</li>
+  </ul>
+  
+  <b>Maintainability</b>
+  <ul>
+    <li>The application should follow a modular Spring MVC architecture.</li>
+    <li>Code should be organized across Controller, Service, and Repository layers.</li>
+    <li>The MySQL database should maintain structured normalized schema.</li>
+  </ul>
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">8</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 13: LLD -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>LOW LEVEL DESIGN</h3>
+  </div>
+  <h4>3.1 SYSTEM ARCHITECTURE DESIGN</h4>
+  <div style="border: 1px solid black; padding: 20px; margin: 30px 0; text-align: center; font-family: monospace;">
+    [PRESENTATION LAYER]<br>
+    Thymeleaf Templates | HTML5/CSS3 | Dashboard<br><br>
+    ↓<br><br>
+    [BUSINESS LOGIC LAYER]<br>
+    BaggageController | ScanController | InvoiceController<br>
+    BaggageService | ScanService | InvoiceService<br><br>
+    ↓<br><br>
+    [DATA ACCESS LAYER]<br>
+    Spring JDBC Template | RowMappers<br>
+    BaggageRepository | InvoiceRepository<br><br>
+    ↓<br><br>
+    [DATABASE LAYER]<br>
+    MySQL 8.0<br>
+    baggage_db (tables: baggage, airlines, scans, invoices)
+  </div>
+  <div class="figure-caption">3.1 System Architecture</div>
+  
+  <br><br>
+  <h4>3.2 COMPONENT DESIGN AND MODULE STRUCTURE</h4>
+  <div style="border: 1px solid black; padding: 20px; margin: 20px 0; font-family: monospace; font-size: 10pt;">
+    src/main/java/com/example/usecaseprj/<br>
+    ├── controller/<br>
+    │   ├── BaggageController.java<br>
+    │   ├── ScanController.java<br>
+    │   └── InvoiceController.java<br>
+    ├── model/<br>
+    │   ├── Baggage.java<br>
+    │   └── Invoice.java<br>
+    ├── repository/<br>
+    │   ├── BaggageRepository.java<br>
+    │   └── InvoiceRepository.java<br>
+    └── service/<br>
+        ├── BaggageService.java<br>
+        └── InvoiceService.java<br>
+  </div>
+  <div class="figure-caption">3.2.1 Module Structure</div>
+  
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">9-11</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 14: IMPLEMENTATION & RESULTS -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>IMPLEMENTATION AND RESULT</h3>
+  </div>
+  <h4>6.1 FILES WITH CODE</h4>
+  
+  <b>CONTROLLER</b>
+  <pre style="background: #f4f4f4; padding: 10px; margin: 10px 0; font-size: 10pt; border: 1px solid #ddd;">
+@Controller
+@RequestMapping("/baggage")
+public class BaggageController {
+    // Controller logic for rendering tracking dashboard
+}
+  </pre>
+  
+  <b>ENTITY</b>
+  <pre style="background: #f4f4f4; padding: 10px; margin: 10px 0; font-size: 10pt; border: 1px solid #ddd;">
+public class Baggage {
+    private String tagNumber;
+    private String status;
+    // Getters and setters
+}
+  </pre>
+  
+  <b>SERVICE</b>
+  <pre style="background: #f4f4f4; padding: 10px; margin: 10px 0; font-size: 10pt; border: 1px solid #ddd;">
+@Service
+public class BaggageService {
+    @Scheduled(fixedRate = 60000)
+    public void flagMisplacedBaggage() { ... }
+}
+  </pre>
+  
+  <b>REPOSITORY</b>
+  <pre style="background: #f4f4f4; padding: 10px; margin: 10px 0; font-size: 10pt; border: 1px solid #ddd;">
+@Repository
+public class BaggageRepository {
+    private final JdbcTemplate jdbcTemplate;
+    // SQL operations using jdbcTemplate
+}
+  </pre>
+  
+  <br><br>
+  <h4>6.2 RESULT</h4>
+  <p>The application successfully compiles and runs on Tomcat port 8080. The web interface correctly handles all CRUD operations and the automated background scanner correctly flags overdue baggage in the MySQL database.</p>
+  
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">19-20</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 15: CONCLUSION -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>CONCLUSION AND FUTURE SCOPE</h3>
+  </div>
+  <h4>7.1 PROJECT SUMMARY AND ACHIEVEMENTS</h4>
+  <p>
+    The Smart Port & Airport Baggage Tracking System is a web-based application developed to provide an organized and efficient solution for managing baggage in transport terminals. Built using Spring Boot, MySQL, and Thymeleaf, the system centralizes tracking operations including scan events, transit duration, automated anomaly detection, invoice calculation, and airline management.
+  </p>
+  
+  <b>ACHIEVEMENTS</b>
+  <ul>
+    <li>Developed a centralized system for automated terminal tracking.</li>
+    <li>Implemented baggage lifecycle management with pure JDBC template SQL.</li>
+    <li>Integrated automated background tasks to flag misplaced luggage.</li>
+    <li>Designed a structured MySQL database with appropriate entities.</li>
+    <li>Developed a layered application architecture.</li>
+  </ul>
+  
+  <br><br>
+  <h4>7.2 FUTURE SCOPE AND ENHANCEMENTS</h4>
+  <ul>
+    <li><b>RFID Integration</b> &ndash; Connect the system with actual RFID readers for automated checkpoint scanning.</li>
+    <li><b>Mobile Application</b> &ndash; Develop a companion app for passengers to track their luggage in real time.</li>
+    <li><b>Payment Gateway</b> &ndash; Integrate digital payments for airlines to settle handling invoices directly.</li>
+    <li><b>Analytics Dashboard</b> &ndash; Add advanced visual analytics for operational bottlenecks.</li>
+  </ul>
+  
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">21-22</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 16: APPENDICES -->
+<!-- ============================================================ -->
+<div class="page" style="border: 1px solid black;">
+  <div class="chapter-header">
+    <h3>APPENDICES AND REFERENCES</h3>
+  </div>
+  <h4>8.1 REFERENCES</h4>
+  <ul>
+    <li>Spring Boot Documentation &ndash; Spring Reference Documentation.</li>
+    <li>Spring Framework Documentation &ndash; Spring Web and JDBC.</li>
+    <li>Thymeleaf Documentation &ndash; Thymeleaf User Guide.</li>
+    <li>MySQL Documentation &ndash; MySQL 8.0 Reference Manual.</li>
+    <li>Oracle Java Documentation &ndash; Java 21 Platform Reference.</li>
+    <li>MDN Web Docs &ndash; HTML and CSS concepts.</li>
+  </ul>
+  
+  <br><br>
+  <h4>8.2 APPENDIX A &ndash; SOURCE CODE STRUCTURE</h4>
+  <div style="font-family: monospace; font-size: 10pt; line-height: 1.5;">
+    usecaseprj/<br>
+    │<br>
+    ├── src/main/java/com/example/usecaseprj/<br>
+    │   │<br>
+    │   ├── controller/<br>
+    │   │   ├── BaggageController.java<br>
+    │   │   ├── ScanController.java<br>
+    │   │   ├── InvoiceController.java<br>
+    │   │   └── ReportController.java<br>
+    │   │<br>
+    │   ├── model/<br>
+    │   │   ├── Baggage.java<br>
+    │   │   └── BaggageScan.java<br>
+    │   │<br>
+    │   ├── repository/<br>
+    │   │   └── BaggageRepository.java<br>
+    │   │<br>
+    │   ├── service/<br>
+    │   │   └── BaggageService.java<br>
+    │   │<br>
+    │   └── UsecaseprjApplication.java<br>
+    │<br>
+    └── src/main/resources/<br>
+        ├── templates/<br>
+        ├── application.properties<br>
+        └── schema.sql<br>
+  </div>
+  
+  <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">23-24</div>
+</div>
+
+</body>
+</html>

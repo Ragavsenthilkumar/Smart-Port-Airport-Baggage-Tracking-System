@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Baggage Inventory')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar('baggage')}"></nav>
+
+<div class="container">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Baggage Inventory</h1>
+            <p class="page-subtitle">All registered luggage and cargo items moving across terminals</p>
+        </div>
+        <div style="display: flex; gap: 0.6rem;">
+            <a th:href="@{/baggage/search}" class="btn btn-outline">Track by Tag</a>
+            <a th:href="@{/baggage/register}" class="btn btn-primary">+ Register New Baggage</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Registered Baggage (<span th:text="${#lists.size(baggageList)}">0</span>)</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>Tag Number</th>
+                    <th>Passenger Name</th>
+                    <th>Carrier</th>
+                    <th>Flight / Vessel</th>
+                    <th>Route</th>
+                    <th>Current Status</th>
+                    <th>Last Checkpoint Scan</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="b : ${baggageList}">
+                    <td>
+                        <strong style="color: var(--accent); font-family: monospace; font-size: 0.95rem;" th:text="${b.tagNumber}">BAG-1001</strong>
+                    </td>
+                    <td th:text="${b.passengerName}">Passenger</td>
+                    <td>
+                        <span th:text="${b.airlineName != null ? b.airlineName : 'Unassigned'}">Emirates</span>
+                        <span th:if="${b.airlineCode}" style="color: var(--text-light); font-size: 0.8rem;" th:text="'(' + ${b.airlineCode} + ')'"></span>
+                    </td>
+                    <td th:text="${b.flightNumber}">EK-202</td>
+                    <td>
+                        <span th:text="${b.origin}">DXB</span> &rarr; <span th:text="${b.destination}">JFK</span>
+                    </td>
+                    <td>
+                        <span class="badge"
+                              th:classappend="'badge-' + ${#strings.toLowerCase(b.status)} + (${b.status == 'MISPLACED'} ? ' badge-pulse' : '')"
+                              th:text="${b.status}">CHECKED_IN</span>
+                    </td>
+                    <td>
+                        <span th:if="${b.lastScanTime != null}" th:text="${#temporals.format(b.lastScanTime, 'yyyy-MM-dd HH:mm')}">2026-09-27 10:30</span>
+                        <span th:if="${b.lastScanTime == null}" style="color: var(--text-light);">No scans recorded</span>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 0.4rem;">
+                            <a th:href="@{/baggage/details/{tag}(tag=${b.tagNumber})}" class="btn btn-outline btn-sm">History</a>
+                            <a th:href="@{/scans/add(tag=${b.tagNumber})}" class="btn btn-secondary btn-sm">+ Scan</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(baggageList)}">
+                    <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                        No baggage registered yet. <a th:href="@{/baggage/register}">Register the first one</a>.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

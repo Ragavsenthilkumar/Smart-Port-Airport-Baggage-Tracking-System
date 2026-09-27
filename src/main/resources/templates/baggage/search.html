@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Track Baggage')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar('search')}"></nav>
+
+<div class="container" style="max-width: 760px;">
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Track Baggage & Cargo</h1>
+            <p class="page-subtitle">Enter a unique baggage tag number to view complete checkpoint scan history</p>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 2rem;">
+        <div class="card-body" style="padding: 2rem;">
+            <form th:action="@{/baggage/search}" method="get">
+                <div class="form-group">
+                    <label class="form-label" for="tagInput" style="font-size: 1.05rem;">Enter Baggage Tag Number</label>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <input type="text" id="tagInput" name="tag" class="form-control"
+                               style="font-size: 1.1rem; padding: 0.75rem;"
+                               th:value="${searchedTag}"
+                               placeholder="e.g. BAG-1001, BAG-1002" required autofocus>
+                        <button type="submit" class="btn btn-primary" style="padding: 0 1.75rem; font-size: 1rem;">
+                            Search
+                        </button>
+                    </div>
+                    <div class="form-hint">Tip: Sample tags in database: BAG-1001, BAG-1002, BAG-1003, BAG-1004, BAG-1005</div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card" style="background-color: #fafbfc;">
+        <div class="card-header">
+            <h3>Quick Status Guide</h3>
+        </div>
+        <div class="card-body">
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem;">
+                <li><span class="badge badge-checked_in">CHECKED_IN</span> &mdash; Tagged at origin airport check-in desk or port intake.</li>
+                <li><span class="badge badge-loaded">LOADED</span> &mdash; Sorted and loaded into aircraft belly container or vessel hold.</li>
+                <li><span class="badge badge-in_transit">IN_TRANSIT</span> &mdash; Actively in movement between departure and destination.</li>
+                <li><span class="badge badge-misplaced">MISPLACED</span> &mdash; Auto-flagged if IN_TRANSIT with no checkpoint scan for &gt; 4 hours.</li>
+                <li><span class="badge badge-claimed">CLAIMED</span> &mdash; Successfully received by passenger or port consignee.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

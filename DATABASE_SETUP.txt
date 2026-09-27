@@ -1,0 +1,83 @@
+========================================================================
+SMART PORT & AIRPORT BAGGAGE TRACKING SYSTEM
+Database Setup & Run Guide
+========================================================================
+
+1. PREREQUISITES
+------------------------------------------------------------------------
+- Java Development Kit (JDK) 21 installed and configured in PATH
+- MySQL Server 8.0+ running on localhost (default port 3306)
+- Maven (or use the included Maven wrapper: ./mvnw or mvnw.cmd)
+
+2. AUTOMATIC DATABASE CREATION
+------------------------------------------------------------------------
+The application is configured to automatically create the database if
+it does not exist using the JDBC connection string parameter:
+`createDatabaseIfNotExist=true`
+
+Tables will be created automatically on application startup via:
+`src/main/resources/schema.sql`
+
+Sample data will be loaded automatically on application startup via:
+`src/main/resources/data.sql`
+
+3. MANUAL DATABASE CREATION (OPTIONAL)
+------------------------------------------------------------------------
+If you prefer creating the database manually in MySQL Workbench or CLI:
+
+  CREATE DATABASE IF NOT EXISTS baggage_db;
+  USE baggage_db;
+
+4. CONFIGURING DATABASE CREDENTIALS
+------------------------------------------------------------------------
+The credentials are read from application.properties using environment
+variable placeholders with fallbacks:
+
+  spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/baggage_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+  spring.datasource.username=${DB_USERNAME:root}
+  spring.datasource.password=${DB_PASSWORD:}
+
+Option A: Set Environment Variables (Recommended)
+-------------------------------------------------
+On Windows PowerShell:
+  $env:DB_USERNAME = "root"
+  $env:DB_PASSWORD = "your_mysql_password"
+  $env:DB_URL = "jdbc:mysql://localhost:3306/baggage_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+
+On Linux / macOS:
+  export DB_USERNAME="root"
+  export DB_PASSWORD="your_mysql_password"
+
+Option B: Edit application.properties directly
+----------------------------------------------
+Open `src/main/resources/application.properties` and replace:
+  spring.datasource.username=root
+  spring.datasource.password=your_mysql_password
+
+5. RUNNING THE APPLICATION
+------------------------------------------------------------------------
+Using the Maven Wrapper:
+  Windows:
+    .\mvnw.cmd spring-boot:run
+
+  Linux / Mac:
+    ./mvnw spring-boot:run
+
+Once started, open your web browser and navigate to:
+  http://localhost:8080/
+
+6. APPLICATION ARCHITECTURE & FEATURES
+------------------------------------------------------------------------
+- Technology Stack: Spring Boot, Spring MVC, Thymeleaf, Spring JDBC (JdbcTemplate), MySQL.
+  (NO Hibernate, JPA, or ORM - all SQL is parameterized using JdbcTemplate).
+- Feature 1: Baggage Registration with unique tag numbers.
+- Feature 2: Baggage Checkpoint Scans with timeline and status update.
+- Feature 3: Baggage Search & Full Scan History by Tag Number.
+- Feature 4: Automatic Misplaced Luggage Detection:
+    Any baggage in 'IN_TRANSIT' status that has not had a scan for more
+    than 4 hours is automatically flagged as 'MISPLACED'. This runs on a
+    scheduled background timer (every minute) and dynamically when viewing
+    baggage records.
+- Feature 5: Airline and Port Operator Management.
+- Feature 6: Airline Ground/Port Handling Invoices and Payment Tracking.
+- Feature 7: Terminal Reports with baggage counts by status and invoice financial totals.
